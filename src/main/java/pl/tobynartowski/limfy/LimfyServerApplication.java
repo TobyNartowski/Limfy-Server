@@ -9,5 +9,4 @@ public class LimfyServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(LimfyServerApplication.class, args);
     }
-
 }

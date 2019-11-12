@@ -84,4 +84,12 @@ public class User implements Serializable {
     public void setBodyData(Set<BodyData> bodyData) {
         this.bodyData = bodyData;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
