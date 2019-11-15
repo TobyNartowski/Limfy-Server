@@ -2,6 +2,7 @@ package pl.tobynartowski.limfy.model;
 
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.annotations.Type;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -26,6 +27,7 @@ public class User implements Serializable {
     private String username;
 
     @NotBlank
+    @Size(max = 128)
     private String password;
 
     private String role = "ROLE_USER";
@@ -36,6 +38,7 @@ public class User implements Serializable {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @RestResource(rel = "body_data", path = "body_data")
     private Set<BodyData> bodyData = new HashSet<>();
 
     public User() {}

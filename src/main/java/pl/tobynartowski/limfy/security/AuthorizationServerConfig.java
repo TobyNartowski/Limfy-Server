@@ -39,7 +39,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
     }
 
@@ -49,10 +49,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory()
                 .withClient(clientId)
                 .secret(hashedPassword)
-                .authorizedGrantTypes("client_credentials")
+                .authorizedGrantTypes("password")
                 .accessTokenValiditySeconds(86400)
                 .refreshTokenValiditySeconds(172800)
-                .scopes("read");
+                .scopes("read", "write");
     }
 
     @Override
