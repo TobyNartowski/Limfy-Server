@@ -1,5 +1,6 @@
 package pl.tobynartowski.limfy.controller;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityModel;
@@ -8,10 +9,14 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import pl.tobynartowski.limfy.model.User;
 import pl.tobynartowski.limfy.repository.UserRepository;
+
+import java.util.UUID;
 
 @RepositoryRestController
 public class UserController {
@@ -43,5 +48,17 @@ public class UserController {
                 new Link(resourceURL + "/body_data", "body_data")
         );
         return new ResponseEntity<>(resource, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/users/username/{username}", produces = "application/hal+json")
+    public ResponseEntity<JSONObject> getUserId(@PathVariable String username) {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        JSONObject object = new JSONObject();
+        object.put("id", user.getId());
+        return new ResponseEntity<>(object, HttpStatus.OK);
     }
 }
