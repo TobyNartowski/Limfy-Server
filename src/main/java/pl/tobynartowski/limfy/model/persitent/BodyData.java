@@ -1,4 +1,4 @@
-package pl.tobynartowski.limfy.model;
+package pl.tobynartowski.limfy.model.persitent;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.annotations.Type;

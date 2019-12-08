@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.tobynartowski.limfy.model.User;
+import pl.tobynartowski.limfy.model.persitent.User;
 import pl.tobynartowski.limfy.repository.UserRepository;
 
 import java.util.HashSet;
