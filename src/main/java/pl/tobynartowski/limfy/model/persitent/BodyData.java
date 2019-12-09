@@ -21,20 +21,21 @@ public class BodyData implements Serializable {
     private UUID id;
 
     private Boolean gender;
-    private Float weight;
-    private Float height;
+    private Integer weight;
+    private Integer height;
     private Integer age;
 
     @NotNull
     private Date timestamp = new Date();
 
     @JsonBackReference
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private User user;
 
     public BodyData() {}
 
-    public BodyData(Boolean gender, Float weight, Float height, Integer age) {
+    public BodyData(Boolean gender, Integer weight, Integer height, Integer age) {
         this.gender = gender;
         this.weight = weight;
         this.height = height;
@@ -57,19 +58,19 @@ public class BodyData implements Serializable {
         this.gender = gender;
     }
 
-    public Float getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
-    public Float getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public void setHeight(Float height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 

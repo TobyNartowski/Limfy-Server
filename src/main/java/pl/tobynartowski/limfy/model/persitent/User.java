@@ -37,9 +37,9 @@ public class User implements Serializable {
     private Set<Measurement> measurements = new HashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    @RestResource(rel = "body_data", path = "body_data")
-    private Set<BodyData> bodyData = new HashSet<>();
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    @RestResource(rel = "body-data", path = "body-data")
+    private BodyData bodyData;
 
     public User() {}
 
@@ -80,11 +80,11 @@ public class User implements Serializable {
         this.measurements = measurements;
     }
 
-    public Set<BodyData> getBodyData() {
+    public BodyData getBodyData() {
         return bodyData;
     }
 
-    public void setBodyData(Set<BodyData> bodyData) {
+    public void setBodyData(BodyData bodyData) {
         this.bodyData = bodyData;
     }
 
