@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import pl.tobynartowski.limfy.model.persitent.Measurement;
-import pl.tobynartowski.limfy.model.projection.MeasurementProjection;
+import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 
 import java.util.UUID;
 

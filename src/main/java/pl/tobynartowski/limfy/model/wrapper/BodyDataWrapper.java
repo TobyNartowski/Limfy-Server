@@ -1,6 +1,4 @@
-package pl.tobynartowski.limfy.model.projection;
-
-import org.springframework.hateoas.server.core.Relation;
+package pl.tobynartowski.limfy.model.wrapper;
 
 public class BodyDataWrapper {
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import pl.tobynartowski.limfy.model.persitent.BodyData;
-import pl.tobynartowski.limfy.model.projection.BodyDataWrapper;
+import pl.tobynartowski.limfy.model.wrapper.BodyDataWrapper;
 import pl.tobynartowski.limfy.repository.BodyDataRepository;
 
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package pl.tobynartowski.limfy.model.projection;
+package pl.tobynartowski.limfy.model.wrapper;
 
 import java.sql.Timestamp;
 

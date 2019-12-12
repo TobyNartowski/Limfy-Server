@@ -64,7 +64,7 @@ public class Measurement implements Serializable {
         return steps;
     }
 
-    public void setSteps(Integer steps) {
+    public void setSteps(@NotNull Integer steps) {
         this.steps = steps;
     }
 
@@ -72,7 +72,7 @@ public class Measurement implements Serializable {
         return shakiness;
     }
 
-    public void setShakiness(Integer shakiness) {
+    public void setShakiness(@NotNull Integer shakiness) {
         this.shakiness = shakiness;
     }
 

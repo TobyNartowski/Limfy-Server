@@ -1,4 +1,4 @@
-package pl.tobynartowski.limfy.model.projection;
+package pl.tobynartowski.limfy.model.wrapper;
 
 import org.springframework.hateoas.server.core.Relation;
 

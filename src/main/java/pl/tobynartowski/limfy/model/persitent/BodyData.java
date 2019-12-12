@@ -2,6 +2,7 @@ package pl.tobynartowski.limfy.model.persitent;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,9 +21,19 @@ public class BodyData implements Serializable {
     @Type(type = "uuid-char")
     private UUID id;
 
+    @NotNull
     private Boolean gender;
+
+    @NotNull
+    @Range(min = 30, max = 150)
     private Integer weight;
+
+    @NotNull
+    @Range(min = 100, max = 250)
     private Integer height;
+
+    @NotNull
+    @Range(min = 6, max = 128)
     private Integer age;
 
     @NotNull
@@ -35,7 +46,7 @@ public class BodyData implements Serializable {
 
     public BodyData() {}
 
-    public BodyData(Boolean gender, Integer weight, Integer height, Integer age) {
+    public BodyData(@NotNull Boolean gender, @NotNull Integer weight, @NotNull Integer height, @NotNull Integer age) {
         this.gender = gender;
         this.weight = weight;
         this.height = height;
@@ -62,7 +73,7 @@ public class BodyData implements Serializable {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(@NotNull Integer weight) {
         this.weight = weight;
     }
 
@@ -70,7 +81,7 @@ public class BodyData implements Serializable {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(@NotNull Integer height) {
         this.height = height;
     }
 
@@ -78,7 +89,7 @@ public class BodyData implements Serializable {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(@NotNull Integer age) {
         this.age = age;
     }
 

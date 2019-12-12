@@ -41,6 +41,10 @@ public class User implements Serializable {
     @RestResource(rel = "body-data", path = "body-data")
     private BodyData bodyData;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<Analysis> analyses = new HashSet<>();
+
     public User() {}
 
     public User(@NotBlank @Size(max = 64) String username, @NotBlank String password) {
@@ -94,5 +98,13 @@ public class User implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Set<Analysis> getAnalyses() {
+        return analyses;
+    }
+
+    public void setAnalyses(Set<Analysis> analyses) {
+        this.analyses = analyses;
     }
 }
