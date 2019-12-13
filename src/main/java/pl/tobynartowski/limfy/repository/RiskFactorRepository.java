@@ -6,7 +6,8 @@ import pl.tobynartowski.limfy.model.persitent.RiskFactor;
 
 import java.util.UUID;
 
-@RepositoryRestResource
+@RepositoryRestResource(path = "risk-factors", collectionResourceRel = "risk-factors")
 public interface RiskFactorRepository extends JpaRepository<RiskFactor, UUID> {
 
+    RiskFactor findByName(String name);
 }

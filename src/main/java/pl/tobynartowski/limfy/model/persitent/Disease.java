@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,11 +35,15 @@ public class Disease implements Serializable {
     private Integer healthInfluence;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "disease")
+    @OneToMany
     private Set<Analysis> analyses = new HashSet<>();
 
     @JsonManagedReference
-    @ManyToMany(mappedBy = "diseases")
+    @RestResource(rel = "risk-factors", path = "risk-factors")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "risk_factor_diseases",
+        joinColumns = @JoinColumn(name = "disease_id"),
+        inverseJoinColumns = @JoinColumn(name = "risk_factor_id"))
     private Set<RiskFactor> riskFactors = new HashSet<>();
 
     public Disease() {}
@@ -86,5 +91,9 @@ public class Disease implements Serializable {
 
     public void setRiskFactors(Set<RiskFactor> riskFactors) {
         this.riskFactors = riskFactors;
+    }
+
+    public void addRiskFactor(RiskFactor riskFactor) {
+        riskFactors.add(riskFactor);
     }
 }

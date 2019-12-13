@@ -27,8 +27,10 @@ public class RiskFactor implements Serializable {
     private String name;
 
     @JsonBackReference
-    @ManyToMany
+    @ManyToMany(mappedBy = "riskFactors")
     private Set<Disease> diseases = new HashSet<>();
+
+    public RiskFactor() {}
 
     public RiskFactor(@NotBlank @Length(min = 3, max = 256) String name) {
         this.name = name;
@@ -56,5 +58,9 @@ public class RiskFactor implements Serializable {
 
     public void setDiseases(Set<Disease> diseases) {
         this.diseases = diseases;
+    }
+
+    public void addDisease(Disease disease) {
+        diseases.add(disease);
     }
 }
