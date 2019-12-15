@@ -8,7 +8,6 @@ import pl.tobynartowski.limfy.analysis.classification.BodyDataClassificationProc
 import pl.tobynartowski.limfy.analysis.classification.BodyDataClassified;
 import pl.tobynartowski.limfy.model.persitent.Analysis;
 import pl.tobynartowski.limfy.model.persitent.Disease;
-import pl.tobynartowski.limfy.model.persitent.RiskFactor;
 import pl.tobynartowski.limfy.model.persitent.User;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 import pl.tobynartowski.limfy.repository.AnalysisRepository;

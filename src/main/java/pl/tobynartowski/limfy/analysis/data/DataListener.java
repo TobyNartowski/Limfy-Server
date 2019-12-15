@@ -14,7 +14,7 @@ import pl.tobynartowski.limfy.repository.MeasurementRepository;
 @RepositoryEventHandler
 public class DataListener {
 
-    private static final int MEASUREMENTS_THRESHOLD = 1;
+    private static final int MEASUREMENTS_THRESHOLD = 100;
     private Logger logger = LoggerFactory.getLogger(DataListener.class);
 
     private MeasurementRepository measurementRepository;
