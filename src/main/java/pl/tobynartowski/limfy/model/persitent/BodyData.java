@@ -3,6 +3,7 @@ package pl.tobynartowski.limfy.model.persitent;
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Range;
+import pl.tobynartowski.limfy.model.misc.Gender;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,7 +23,8 @@ public class BodyData implements Serializable {
     private UUID id;
 
     @NotNull
-    private Boolean gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @NotNull
     @Range(min = 30, max = 150)
@@ -33,7 +35,7 @@ public class BodyData implements Serializable {
     private Integer height;
 
     @NotNull
-    @Range(min = 6, max = 128)
+    @Range(min = 1900, max = 2015)
     private Integer age;
 
     @NotNull
@@ -46,7 +48,7 @@ public class BodyData implements Serializable {
 
     public BodyData() {}
 
-    public BodyData(@NotNull Boolean gender, @NotNull Integer weight, @NotNull Integer height, @NotNull Integer age) {
+    public BodyData(@NotNull Gender gender, @NotNull Integer weight, @NotNull Integer height, @NotNull Integer age) {
         this.gender = gender;
         this.weight = weight;
         this.height = height;
@@ -61,11 +63,11 @@ public class BodyData implements Serializable {
         this.id = id;
     }
 
-    public Boolean getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

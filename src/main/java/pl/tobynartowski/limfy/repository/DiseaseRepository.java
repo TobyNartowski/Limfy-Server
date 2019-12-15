@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @RepositoryRestResource
 public interface DiseaseRepository extends JpaRepository<Disease, UUID> {
+
+    Disease findByName(String name);
 }

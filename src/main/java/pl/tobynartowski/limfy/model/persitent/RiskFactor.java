@@ -3,10 +3,12 @@ package pl.tobynartowski.limfy.model.persitent;
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
+import pl.tobynartowski.limfy.model.data.RiskFactorData;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -62,5 +64,13 @@ public class RiskFactor implements Serializable {
 
     public void addDisease(Disease disease) {
         diseases.add(disease);
+    }
+
+    public RiskFactorData of() {
+        return Arrays
+                .stream(RiskFactorData.values())
+                .filter(r -> r.getName().equals(this.getName()))
+                .findAny()
+                .orElseThrow(IllegalStateException::new);
     }
 }

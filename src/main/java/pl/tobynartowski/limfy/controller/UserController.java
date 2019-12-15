@@ -34,6 +34,10 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
 
+        if (user.getUsername() == null || user.getPassword() == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 

@@ -1,4 +1,4 @@
-package pl.tobynartowski.limfy.analysis;
+package pl.tobynartowski.limfy.analysis.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,17 +10,15 @@ import pl.tobynartowski.limfy.repository.DiseaseRepository;
 import pl.tobynartowski.limfy.repository.RiskFactorRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
-public class AnalyticalDataManager {
+public class DataIntegrityManager {
 
     private RiskFactorRepository riskFactorRepository;
     private DiseaseRepository diseaseRepository;
 
     @Autowired
-    public AnalyticalDataManager(RiskFactorRepository riskFactorRepository, DiseaseRepository diseaseRepository) {
+    public DataIntegrityManager(RiskFactorRepository riskFactorRepository, DiseaseRepository diseaseRepository) {
         this.riskFactorRepository = riskFactorRepository;
         this.diseaseRepository = diseaseRepository;
     }
@@ -41,7 +39,7 @@ public class AnalyticalDataManager {
                     .filter(r -> r.getName().equals(diseaseEntry.getName()))
                     .findAny()
                     .orElseGet(() -> new Disease(diseaseEntry.getName(), diseaseEntry.getHealthInfluence()));
-            for (RiskFactorData riskFactorData : RiskFactorData.values()) {
+            for (RiskFactorData riskFactorData : diseaseEntry.getRiskFactors()) {
                 RiskFactor riskFactor = riskFactorRepository.findByName(riskFactorData.getName());
                 if (!disease.getRiskFactors().contains(riskFactor)) {
                     disease.addRiskFactor(riskFactor);
@@ -51,7 +49,7 @@ public class AnalyticalDataManager {
         }
     }
 
-    public void checkDatabaseIntegrity() {
+    public void checkDatabaseData() {
         checkRiskFactors();
         checkDiseases();
     }
