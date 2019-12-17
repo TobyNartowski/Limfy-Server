@@ -9,10 +9,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import pl.tobynartowski.limfy.model.persitent.User;
 import pl.tobynartowski.limfy.repository.UserRepository;
 
@@ -41,7 +38,12 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 
-        String resourceURL = request.getURI().toString() + "/" + savedUser.getId();
+        String resourceURL = request.getURI().toString();
+        if (!request.getURI().toString().endsWith("/")) {
+            resourceURL += "/";
+        }
+        resourceURL += savedUser.getId();
+
         EntityModel<User> resource = new EntityModel<>(savedUser);
         resource.add(
                 new Link(resourceURL, "self"),
@@ -62,5 +64,20 @@ public class UserController {
         JSONObject object = new JSONObject();
         object.put("id", user.getId());
         return new ResponseEntity<>(object, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/users/{username}")
+    public ResponseEntity<String> deleteEmptyUser(@PathVariable String username) {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getBodyData() != null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
+        }
+
+        userRepository.delete(user);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }

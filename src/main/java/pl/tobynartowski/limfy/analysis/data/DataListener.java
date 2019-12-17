@@ -28,7 +28,6 @@ public class DataListener {
 
     @HandleAfterCreate
     public void interceptMeasurements(Measurement measurement) {
-        logger.info("Intercepting...");
         if (measurement != null && measurement.getUser() != null) {
             if (measurementRepository.countMeasurementsByUser(measurement.getUser()) % MEASUREMENTS_THRESHOLD == 0) {
                 logger.info("Analyzing data for user: " + measurement.getUser().getUsername());
