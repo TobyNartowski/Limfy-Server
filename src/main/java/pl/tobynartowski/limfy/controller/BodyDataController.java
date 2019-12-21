@@ -33,6 +33,7 @@ public class BodyDataController {
         BodyData originalBodyData = bodyDataRepository.findByUserId(UUID.fromString(id));
         originalBodyData.setHeight(data.getHeight());
         originalBodyData.setWeight(data.getWeight());
+        originalBodyData.setGender(data.getGender());
         bodyDataRepository.save(originalBodyData);
 
         String resourceBaseURL = request.getURI().toString();
