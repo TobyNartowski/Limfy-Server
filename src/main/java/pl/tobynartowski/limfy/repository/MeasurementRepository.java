@@ -11,6 +11,7 @@ import pl.tobynartowski.limfy.model.persitent.Measurement;
 import pl.tobynartowski.limfy.model.persitent.User;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 
+import java.util.Date;
 import java.util.UUID;
 
 @RepositoryRestResource
@@ -28,4 +29,7 @@ public interface MeasurementRepository extends JpaRepository<Measurement, UUID> 
     Page<MeasurementProjection> findMeasurementAverages(@Param("id") String id, Pageable pageable);
 
     Long countMeasurementsByUser(User user);
+
+    @Query(value = "SELECT COUNT(*) FROM measurement m WHERE m.user_id = :id AND DATE(m.timestamp) = CURDATE()", nativeQuery = true)
+    Long countTodayMeasurements(@Param("id") String id);
 }

@@ -1,5 +1,6 @@
 package pl.tobynartowski.limfy.controller;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementWrapper;
 import pl.tobynartowski.limfy.repository.MeasurementRepository;
+import pl.tobynartowski.limfy.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +25,12 @@ import java.util.stream.Collectors;
 public class MeasurementController {
 
     private MeasurementRepository measurementRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public MeasurementController(MeasurementRepository measurementRepository) {
+    public MeasurementController(MeasurementRepository measurementRepository, UserRepository userRepository) {
         this.measurementRepository = measurementRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping(value = "/users/{id}/measurements/average", produces = "application/hal+json")
@@ -54,5 +58,12 @@ public class MeasurementController {
         pagedModel.add(new Link(resourceBaseURL + "?page=" + (page.getTotalPages() - 1) + "&size=" + pageable.getPageSize(), "last"));
 
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/users/{id}/measurements/today-count", produces = "application/hal+json")
+    public ResponseEntity<JSONObject> getTodayMeasurementsCount(@PathVariable String id) {
+        JSONObject object = new JSONObject();
+        object.put("count", measurementRepository.countTodayMeasurements(id));
+        return new ResponseEntity<>(object, HttpStatus.OK);
     }
 }
