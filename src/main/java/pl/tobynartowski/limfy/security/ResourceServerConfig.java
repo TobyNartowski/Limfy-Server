@@ -21,6 +21,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                     .antMatchers("/oauth/**").permitAll()
                     .antMatchers(HttpMethod.POST, prefix + "/users").permitAll()
                     .antMatchers(HttpMethod.POST, prefix + "/body-data").permitAll()
+                    .antMatchers(HttpMethod.POST, prefix + "/contacts").permitAll()
                     .antMatchers(HttpMethod.DELETE, prefix + "/users/**").permitAll()
                 .and()
                 .authorizeRequests()
