@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +28,7 @@ public class BodyDataController {
         this.bodyDataRepository = bodyDataRepository;
     }
 
-    @PatchMapping(value = "/users/{id}/body-data", produces = "application/hal+json", consumes = "application/json")
+    @PatchMapping(value = "/users/{id}/body-data", produces = MediaTypes.HAL_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EntityModel<BodyData>> updateBodyData(@PathVariable("id") String id,
                                                                 @RequestBody BodyDataWrapper data,
                                                                 HttpRequest request) {

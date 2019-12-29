@@ -27,8 +27,11 @@ public interface MeasurementRepository extends JpaRepository<Measurement, UUID> 
             nativeQuery = true)
     Page<MeasurementProjection> findMeasurementAverages(@Param("id") String id, Pageable pageable);
 
-    Long countMeasurementsByUser(User user);
+    @RestResource(exported = false)
+    @Query(value = "SELECT ROUND(AVG((((100 - m.shakiness) * 1.61803) * m.heartbeat) / 100), 2) AS heartbeatAverage " +
+            "FROM measurement m WHERE m.user_id = :id AND DATE(m.timestamp) = CURDATE()",
+            nativeQuery = true)
+    Double getTodayHeartbeatAverage(@Param("id") String id);
 
-    @Query(value = "SELECT COUNT(*) FROM measurement m WHERE m.user_id = :id AND DATE(m.timestamp) = CURDATE()", nativeQuery = true)
-    Long countTodayMeasurements(@Param("id") String id);
+    Long countMeasurementsByUser(User user);
 }

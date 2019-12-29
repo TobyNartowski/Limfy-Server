@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping(value = "/users", produces = "application/hal+json")
+    @PostMapping(value = "/users", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<User>> saveUser(@RequestBody User user, HttpRequest request) {
         if (userRepository.findUserByUsername(user.getUsername()) != null) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
@@ -54,7 +55,7 @@ public class UserController {
         return new ResponseEntity<>(resource, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/users/username/{username}", produces = "application/hal+json")
+    @GetMapping(value = "/users/username/{username}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<JSONObject> getUserId(@PathVariable String username) {
         User user = userRepository.findUserByUsername(username);
         if (user == null) {

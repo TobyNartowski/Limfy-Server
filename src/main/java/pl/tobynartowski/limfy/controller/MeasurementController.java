@@ -7,16 +7,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import pl.tobynartowski.limfy.model.persitent.Measurement;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementWrapper;
 import pl.tobynartowski.limfy.repository.MeasurementRepository;
-import pl.tobynartowski.limfy.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,15 +28,13 @@ import java.util.stream.Collectors;
 public class MeasurementController {
 
     private MeasurementRepository measurementRepository;
-    private UserRepository userRepository;
 
     @Autowired
-    public MeasurementController(MeasurementRepository measurementRepository, UserRepository userRepository) {
+    public MeasurementController(MeasurementRepository measurementRepository) {
         this.measurementRepository = measurementRepository;
-        this.userRepository = userRepository;
     }
 
-    @GetMapping(value = "/users/{id}/measurements/average", produces = "application/hal+json")
+    @GetMapping(value = "/users/{id}/measurements/average", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<PagedModel<EntityModel<MeasurementWrapper>>> findHeartbeatAverages(@PathVariable String id, Pageable pageable,
                                                                                              HttpRequest request) {
         String resourceBaseURL = request.getURI().toString();
@@ -60,10 +61,18 @@ public class MeasurementController {
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/{id}/measurements/today-count", produces = "application/hal+json")
-    public ResponseEntity<JSONObject> getTodayMeasurementsCount(@PathVariable String id) {
-        JSONObject object = new JSONObject();
-        object.put("count", measurementRepository.countTodayMeasurements(id));
-        return new ResponseEntity<>(object, HttpStatus.OK);
+    @PostMapping(value = "/measurements")
+    public ResponseEntity<JSONObject> postMeasurement(@RequestBody EntityModel<Measurement> measurement) {
+        if (measurement.getContent() == null || measurement.getContent().getUser() == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        measurementRepository.save(measurement.getContent());
+
+        Double heartbeat = measurementRepository.getTodayHeartbeatAverage(measurement.getContent().getUser().getId().toString());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("heartbeat", heartbeat);
+
+        return new ResponseEntity<>(jsonObject, HttpStatus.CREATED);
     }
 }
