@@ -8,7 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 public class User implements Serializable {
@@ -44,6 +46,10 @@ public class User implements Serializable {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Analysis> analyses = new HashSet<>();
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    private Contact contact;
 
     public User() {}
 
@@ -106,5 +112,13 @@ public class User implements Serializable {
 
     public void setAnalyses(Set<Analysis> analyses) {
         this.analyses = analyses;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }

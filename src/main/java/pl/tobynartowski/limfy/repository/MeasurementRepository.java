@@ -11,7 +11,6 @@ import pl.tobynartowski.limfy.model.persitent.Measurement;
 import pl.tobynartowski.limfy.model.persitent.User;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 
-import java.util.Date;
 import java.util.UUID;
 
 @RepositoryRestResource
