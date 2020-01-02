@@ -13,21 +13,21 @@ import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 import pl.tobynartowski.limfy.repository.AnalysisRepository;
 import pl.tobynartowski.limfy.repository.DiseaseRepository;
 import pl.tobynartowski.limfy.repository.MeasurementRepository;
+import pl.tobynartowski.limfy.repository.MeasurementResultRepository;
 
 @Service
 public class Analyzer {
 
-    private MeasurementRepository measurementRepository;
+    private MeasurementResultRepository measurementResultRepository;
     private BodyDataClassificationProcessor classificationProcessor;
     private DiseaseRepository diseaseRepository;
     private AnalysisRepository analysisRepository;
 
     @Autowired
-    public Analyzer(MeasurementRepository measurementRepository,
-                    BodyDataClassificationProcessor classificationProcessor,
+    public Analyzer(MeasurementResultRepository measurementResultRepository, BodyDataClassificationProcessor classificationProcessor,
                     DiseaseRepository diseaseRepository,
                     AnalysisRepository analysisRepository) {
-        this.measurementRepository = measurementRepository;
+        this.measurementResultRepository = measurementResultRepository;
         this.classificationProcessor = classificationProcessor;
         this.diseaseRepository = diseaseRepository;
         this.analysisRepository = analysisRepository;
@@ -35,7 +35,7 @@ public class Analyzer {
 
     public void analyzeUserData(User user) {
         Page<MeasurementProjection> userMeasurements =
-                measurementRepository.findMeasurementAverages(user.getId().toString(), Pageable.unpaged());
+                measurementResultRepository.getMeasurementResults(user.getId().toString(), Pageable.unpaged());
 
         double heartbeatAverage = userMeasurements
                 .stream()

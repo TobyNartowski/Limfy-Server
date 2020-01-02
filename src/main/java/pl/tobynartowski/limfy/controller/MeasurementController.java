@@ -20,18 +20,23 @@ import pl.tobynartowski.limfy.model.persitent.Measurement;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementWrapper;
 import pl.tobynartowski.limfy.repository.MeasurementRepository;
+import pl.tobynartowski.limfy.repository.MeasurementResultRepository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RepositoryRestController
 public class MeasurementController {
 
     private MeasurementRepository measurementRepository;
+    private MeasurementResultRepository measurementResultRepository;
 
     @Autowired
-    public MeasurementController(MeasurementRepository measurementRepository) {
+    public MeasurementController(MeasurementRepository measurementRepository, MeasurementResultRepository measurementResultRepository) {
         this.measurementRepository = measurementRepository;
+        this.measurementResultRepository = measurementResultRepository;
     }
 
     @GetMapping(value = "/users/{id}/measurements/average", produces = MediaTypes.HAL_JSON_VALUE)
@@ -40,7 +45,8 @@ public class MeasurementController {
         String resourceBaseURL = request.getURI().toString();
         resourceBaseURL = resourceBaseURL.substring(0, resourceBaseURL.indexOf("average") + 7);
 
-        Page<MeasurementProjection> page = measurementRepository.findMeasurementAverages(id, pageable);
+        measurementRepository.generateResults(id);
+        Page<MeasurementProjection> page = measurementResultRepository.getMeasurementResults(id, pageable);
         List<EntityModel<MeasurementWrapper>> wrappedPage = page.stream()
                 .map(m -> new EntityModel<>(new MeasurementWrapper(m.getHeartbeatAverage(), m.getStepsSum(), m.getTimestamp())))
                 .collect(Collectors.toList());
@@ -69,7 +75,7 @@ public class MeasurementController {
 
         measurementRepository.save(measurement.getContent());
 
-        Double heartbeat = measurementRepository.getTodayHeartbeatAverage(measurement.getContent().getUser().getId().toString());
+        Double heartbeat = measurementRepository.getTodayHeartbeatAverage(measurement.getContent().getUser().getId().toString(), new Date());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("heartbeat", heartbeat);
 
