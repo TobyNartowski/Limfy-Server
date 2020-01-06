@@ -12,7 +12,6 @@ import pl.tobynartowski.limfy.model.persitent.User;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 import pl.tobynartowski.limfy.repository.AnalysisRepository;
 import pl.tobynartowski.limfy.repository.DiseaseRepository;
-import pl.tobynartowski.limfy.repository.MeasurementRepository;
 import pl.tobynartowski.limfy.repository.MeasurementResultRepository;
 
 @Service

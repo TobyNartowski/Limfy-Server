@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import pl.tobynartowski.limfy.analysis.data.DataListener;
 import pl.tobynartowski.limfy.model.persitent.Measurement;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementProjection;
 import pl.tobynartowski.limfy.model.wrapper.MeasurementWrapper;
@@ -24,7 +25,6 @@ import pl.tobynartowski.limfy.repository.MeasurementResultRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RepositoryRestController
@@ -32,11 +32,13 @@ public class MeasurementController {
 
     private MeasurementRepository measurementRepository;
     private MeasurementResultRepository measurementResultRepository;
+    private DataListener dataListener;
 
     @Autowired
-    public MeasurementController(MeasurementRepository measurementRepository, MeasurementResultRepository measurementResultRepository) {
+    public MeasurementController(MeasurementRepository measurementRepository, MeasurementResultRepository measurementResultRepository, DataListener dataListener) {
         this.measurementRepository = measurementRepository;
         this.measurementResultRepository = measurementResultRepository;
+        this.dataListener = dataListener;
     }
 
     @GetMapping(value = "/users/{id}/measurements/average", produces = MediaTypes.HAL_JSON_VALUE)
@@ -73,7 +75,7 @@ public class MeasurementController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        measurementRepository.save(measurement.getContent());
+        dataListener.interceptMeasurements(measurementRepository.save(measurement.getContent()));
 
         Double heartbeat = measurementRepository.getTodayHeartbeatAverage(measurement.getContent().getUser().getId().toString(), new Date());
         JSONObject jsonObject = new JSONObject();
